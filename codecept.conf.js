@@ -1,40 +1,75 @@
+const { SSL_OP_NETSCAPE_DEMO_CIPHER_CHANGE_BUG } = require("constants");
+
 exports.config = {
-  output: './output',
+  output: "./allure-report/report",
   helpers: {
     Appium: {
-      app: 'Arriel/Users/60003339/WorkspaceArriel/projetos/AutomationMobileJS/app/Android/app-qa-release0.66.0.apk',
-      platform: 'Android',
-      host: 'localhost',
+      app: `${process.env.PWD}/app/Android/app-qa-release.apk`,
+      platform: "Android",
+      host: "localhost",
       port: 4723,
       desiredCapabilities: {
-        automationName: 'uiautomator2',
-        deviceName: 'emulador-5554',
-        platformVersion: '8'
-      }
-    }
+        automationName: "uiautomator2",
+        deviceName: "Pixel 2",
+        platformVersion: "9",
+      },
+    },
+    SwipeHelper: {
+      require: "./support/SwipeHelper.js",
+    },
+    CPFHelper: {
+      require: "./support/CpfHelper.js",
+      comPontos: true,
+    },
+    YmlHelper: {
+      require: "./support/YmlHelper.js",
+    },
   },
   include: {
-    I: './steps_file.js'
+    I: "./steps_file.js",
   },
+
   mocha: {},
   bootstrap: null,
   teardown: null,
   hooks: [],
+
   gherkin: {
-    features: './features/*.feature',
-    steps: ['./step_definitions/steps.js']
+    features: "./features/*.feature",
+    steps: [
+      "./step_definitions/SaldoSteps.js",
+      "./step_definitions/LoginSteps.js",
+      "./step_definitions/ExtratoSteps.js",
+      "./step_definitions/DepositoPorBoletoSteps.js",
+      "./step_definitions/TransferenciaMidwaySteps.js",
+      "./step_definitions/TransferenciaOutrosBancosSteps.js",
+      "./step_definitions/EncerramentoContaPagSteps.js",
+      "./step_definitions/onboarding/ContaPagamentoStep.js",
+    ],
   },
+
   plugins: {
-    "allure":
-     {
-    fullPageScreenshots: true,
-    screenshotsForAllureReport: false,  
+    allure: {
+      disableWebdriverStepsReporting: true,
+      disableWebdriverScreenshotsReporting: true,
+      enabled: true,
+      fullPageScreenshots: true,
+      screenshotsForAllureReport: true,
+      addAttachment: true,
     },
     screenshotOnFail: {
-      enabled: true
-    }
+      enabled: true,
+    },
+    addAttachment: {
+      name: SSL_OP_NETSCAPE_DEMO_CIPHER_CHANGE_BUG,
+      content: true,
+    },
+    addEnvironment: {
+      name: true,
+      value: true,
+    },
   },
-  tests: './*_test.js',
-  name: 'automationMobileJS',
-  translation: 'pt-BR'
-}
+  tests: "./*_test.js",
+  name: "automationMobileJS",
+  // translation: "pt-BR",
+};
